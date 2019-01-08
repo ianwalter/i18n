@@ -1200,12 +1200,12 @@ makeerror@1.0.x:
   dependencies:
     tmpl "1.0.x"
 
-math-interval-parser@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/math-interval-parser/-/math-interval-parser-1.1.0.tgz#dbeda5b06b3249973c6df6170fde2386f0afd893"
-  integrity sha1-2+2lsGsySZc8bfYXD94jhvCv2JM=
+math-interval-parser@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/math-interval-parser/-/math-interval-parser-2.0.0.tgz#44421ade29c9161102b107a12302cca0f0ca9939"
+  integrity sha1-REIa3inJFhECsQehIwLMoPDKmTk=
   dependencies:
-    xregexp "^2.0.0"
+    xregexp "^3.2.0"
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -2092,10 +2092,10 @@ xml-name-validator@^3.0.0:
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
 
-xregexp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-2.0.0.tgz#52a63e56ca0b84a7f3a5f3d61872f126ad7a5943"
-  integrity sha1-UqY+VsoLhKfzpfPWGHLxJq16WUM=
+xregexp@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-3.2.0.tgz#cb3601987bfe2695b584000c18f1c4a8c322878e"
+  integrity sha1-yzYBmHv+JpW1hAAMGPHEqMMih44=
 
 zombie@*:
   version "6.1.4"
