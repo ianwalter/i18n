@@ -1,98 +1,93 @@
-var i18n = require('../i18n'),
-  should = require("should"),
-  fs = require('fs'),
-  path = require('path'),
-  extensions = require('./extensions'),
-  yaml = require('js-yaml');
+var i18n = require('../i18n')
+var should = require('should')
+var fs = require('fs')
+var extensions = require('./extensions')
+var yaml = require('js-yaml')
+var directory = './localesmakeplural'
 
-var directory = './localesmakeplural';
-
-extensions.forEach(function(extension) {
-
-  function getData(l) {
-    switch(extension) {
+extensions.forEach(function (extension) {
+  function getData (l) {
+    switch (extension) {
       case '.yml':
-        return yaml.safeLoad(fs.readFileSync(directory + '/' + l + extension));
-        break;
+        return yaml.safeLoad(fs.readFileSync(directory + '/' + l + extension))
       default:
-        return JSON.parse(fs.readFileSync(directory + '/' + l + extension));
+        return JSON.parse(fs.readFileSync(directory + '/' + l + extension))
     }
   }
 
-  function putData(l, d) {
-    var data;
-    switch(extension) {
+  function putData (l, d) {
+    var data
+    switch (extension) {
       case '.yml':
-        data = yaml.safeDump(d, {indent: '\t'});
+        data = yaml.safeDump(d, { indent: '\t' })
         break
       default:
-        data = JSON.stringify(d, null, '\t');
+        data = JSON.stringify(d, null, '\t')
     }
-    fs.writeFileSync(directory + '/' + l + extension, data);
+    fs.writeFileSync(directory + '/' + l + extension, data)
   }
 
-  describe('i18n supports MakePlural use '+extension, function() {
-
-    var TestScope = {};
-    var locales = ['en', 'de', 'fr', 'ru', 'ar', 'de-DE', 'de-AT', 'de-CH'];
+  describe('i18n supports MakePlural use ' + extension, function () {
+    var TestScope = {}
+    var locales = ['en', 'de', 'fr', 'ru', 'ar', 'de-DE', 'de-AT', 'de-CH']
     var fixture = {
       de: {
-        "%s cat": {
+        '%s cat': {
           one: '%d Katze',
           other: '%d Katzen'
         }
       },
       'de-DE': {
-        "%s cat": {
+        '%s cat': {
           one: '%d Katze',
           other: '%d Katzen'
         }
       },
       'de-AT': {
-        "%s cat": {
+        '%s cat': {
           one: '%d Katze',
           other: '%d Katzen'
         }
       },
       'de-CH': {
-        "%s cat": {
+        '%s cat': {
           one: '%d Katze',
           other: '%d Katzen'
         }
       },
       en: {
-        "%s cat": {
+        '%s cat': {
           one: '%d cat',
           other: '%d cats'
         }
       },
       fr: {
-        "%s cat": {
+        '%s cat': {
           one: '%d chat',
           other: '%d chats'
         }
       },
       ru: {
-        "%s cat": {
+        '%s cat': {
           one: '%d кошка',
           few: '%d кошки',
           many: '%d кошек'
         }
       },
       ar: {
-        "%s book": {
-          zero: "‫٠ كتاب",
-          one: "كتاب",
-          two: "كتابان",
-          few: "‫٣ كتب",
-          many: "‫١١ كتابًا",
-          other: "‫١٠٠ كتاب"
+        '%s book': {
+          zero: '‫٠ كتاب',
+          one: 'كتاب',
+          two: 'كتابان',
+          few: '‫٣ كتب',
+          many: '‫١١ كتابًا',
+          other: '‫١٠٠ كتاب'
         }
       }
-    };
+    }
 
-    beforeEach(function() {
-      TestScope = {};
+    beforeEach(function () {
+      TestScope = {}
       i18n.configure({
         locales: locales,
         register: TestScope,
@@ -101,93 +96,92 @@ extensions.forEach(function(extension) {
         syncFiles: true,
         objectNotation: true,
         extension: extension
-      });
+      })
 
-      TestScope.setLocale('en');
-      TestScope.__('Hello World'); // <-- just inits
+      TestScope.setLocale('en')
+      TestScope.__('Hello World') // <-- just inits
       for (var i = 0; i < locales.length; i++) {
-        putData(locales[i], fixture[locales[i]]);
-      };
-    });
-
-    it('A test phrase should have got written to all files', function(done) {
-      should.deepEqual(getData('en')['%s cat'], { one: '%d cat', other: '%d cats' } );
-      should.deepEqual(getData('de')['%s cat'], { one: '%d Katze', other: '%d Katzen' } );
-      should.deepEqual(getData('fr')['%s cat'], { one: '%d chat', other: '%d chats' } );
-      should.deepEqual(getData('ru')['%s cat'], { one: '%d кошка', few: '%d кошки', many: '%d кошек' });
-      done();
-    });
-
-    it('__n() should return correctly in russian', function(done) {
-      TestScope.setLocale('ru');
-      should.deepEqual(TestScope.__n('%s cat', 0), '0 кошек');
-      should.deepEqual(TestScope.__n('%s cat', 1), '1 кошка');
-      should.deepEqual(TestScope.__n('%s cat', 2), '2 кошки');
-      should.deepEqual(TestScope.__n('%s cat', 5), '5 кошек');
-      should.deepEqual(TestScope.__n('%s cat', 6), '6 кошек');
-      should.deepEqual(TestScope.__n('%s cat', 21), '21 кошка');
-      done();
-    });
-
-    it('__n() should return correctly in french', function(done) {
-      TestScope.setLocale('fr');
-      should.deepEqual(TestScope.__n('%s cat', 0), '0 chat');
-      should.deepEqual(TestScope.__n('%s cat', 1), '1 chat');
-      should.deepEqual(TestScope.__n('%s cat', 2), '2 chats');
-      should.deepEqual(TestScope.__n('%s cat', 5), '5 chats');
-      should.deepEqual(TestScope.__n('%s cat', 6), '6 chats');
-      should.deepEqual(TestScope.__n('%s cat', 21), '21 chats');
-      done();
-    });
-
-    it('__n() should return correctly in german', function(done) {
-      TestScope.setLocale('de');
-      should.deepEqual(TestScope.__n('%s cat', 0), '0 Katzen');
-      should.deepEqual(TestScope.__n('%s cat', 1), '1 Katze');
-      should.deepEqual(TestScope.__n('%s cat', 2), '2 Katzen');
-      should.deepEqual(TestScope.__n('%s cat', 5), '5 Katzen');
-      should.deepEqual(TestScope.__n('%s cat', 6), '6 Katzen');
-      should.deepEqual(TestScope.__n('%s cat', 21), '21 Katzen');
-      done();
-    });
-
-    it('__n() should return correctly in english', function(done) {
-      TestScope.setLocale('en');
-      should.deepEqual(TestScope.__n('%s cat', 0), '0 cats');
-      should.deepEqual(TestScope.__n('%s cat', 1), '1 cat');
-      should.deepEqual(TestScope.__n('%s cat', 2), '2 cats');
-      should.deepEqual(TestScope.__n('%s cat', 5), '5 cats');
-      should.deepEqual(TestScope.__n('%s cat', 6), '6 cats');
-      should.deepEqual(TestScope.__n('%s cat', 21), '21 cats');
-      done();
-    });
-
-    it('__n() should return correctly in arabic', function(done) {
-      TestScope.setLocale('ar');
-      should.deepEqual(TestScope.__n('%s book', 0), '‫٠ كتاب');
-      should.deepEqual(TestScope.__n('%s book', 1), 'كتاب');
-      should.deepEqual(TestScope.__n('%s book', 2), 'كتابان');
-      should.deepEqual(TestScope.__n('%s book', 3), '‫٣ كتب');
-      should.deepEqual(TestScope.__n('%s book', 11), '‫١١ كتابًا');
-      should.deepEqual(TestScope.__n('%s book', 100), '‫١٠٠ كتاب');
-      TestScope.__n('%s dog', 0);
-      TestScope.__n('%s kitty', '%s kittens', 0);
-      done();
-    });
-
-    it('__n() should return correctly in german for all regions', function(done) {
-      var regions = ['de-DE', 'de-AT', 'de-CH'];
-      for(var i = 0; i < regions.length; i++) {
-        TestScope.setLocale(regions[i]);
-        should.deepEqual(TestScope.__n('%s cat', 0), '0 Katzen');
-        should.deepEqual(TestScope.__n('%s cat', 1), '1 Katze');
-        should.deepEqual(TestScope.__n('%s cat', 2), '2 Katzen');
-        should.deepEqual(TestScope.__n('%s cat', 5), '5 Katzen');
-        should.deepEqual(TestScope.__n('%s cat', 6), '6 Katzen');
-        should.deepEqual(TestScope.__n('%s cat', 21), '21 Katzen');
+        putData(locales[i], fixture[locales[i]])
       }
-      done();
-    });
+    })
 
-  });
-});
+    it('A test phrase should have got written to all files', function (done) {
+      should.deepEqual(getData('en')['%s cat'], { one: '%d cat', other: '%d cats' })
+      should.deepEqual(getData('de')['%s cat'], { one: '%d Katze', other: '%d Katzen' })
+      should.deepEqual(getData('fr')['%s cat'], { one: '%d chat', other: '%d chats' })
+      should.deepEqual(getData('ru')['%s cat'], { one: '%d кошка', few: '%d кошки', many: '%d кошек' })
+      done()
+    })
+
+    it('__n() should return correctly in russian', function (done) {
+      TestScope.setLocale('ru')
+      should.deepEqual(TestScope.__n('%s cat', 0), '0 кошек')
+      should.deepEqual(TestScope.__n('%s cat', 1), '1 кошка')
+      should.deepEqual(TestScope.__n('%s cat', 2), '2 кошки')
+      should.deepEqual(TestScope.__n('%s cat', 5), '5 кошек')
+      should.deepEqual(TestScope.__n('%s cat', 6), '6 кошек')
+      should.deepEqual(TestScope.__n('%s cat', 21), '21 кошка')
+      done()
+    })
+
+    it('__n() should return correctly in french', function (done) {
+      TestScope.setLocale('fr')
+      should.deepEqual(TestScope.__n('%s cat', 0), '0 chat')
+      should.deepEqual(TestScope.__n('%s cat', 1), '1 chat')
+      should.deepEqual(TestScope.__n('%s cat', 2), '2 chats')
+      should.deepEqual(TestScope.__n('%s cat', 5), '5 chats')
+      should.deepEqual(TestScope.__n('%s cat', 6), '6 chats')
+      should.deepEqual(TestScope.__n('%s cat', 21), '21 chats')
+      done()
+    })
+
+    it('__n() should return correctly in german', function (done) {
+      TestScope.setLocale('de')
+      should.deepEqual(TestScope.__n('%s cat', 0), '0 Katzen')
+      should.deepEqual(TestScope.__n('%s cat', 1), '1 Katze')
+      should.deepEqual(TestScope.__n('%s cat', 2), '2 Katzen')
+      should.deepEqual(TestScope.__n('%s cat', 5), '5 Katzen')
+      should.deepEqual(TestScope.__n('%s cat', 6), '6 Katzen')
+      should.deepEqual(TestScope.__n('%s cat', 21), '21 Katzen')
+      done()
+    })
+
+    it('__n() should return correctly in english', function (done) {
+      TestScope.setLocale('en')
+      should.deepEqual(TestScope.__n('%s cat', 0), '0 cats')
+      should.deepEqual(TestScope.__n('%s cat', 1), '1 cat')
+      should.deepEqual(TestScope.__n('%s cat', 2), '2 cats')
+      should.deepEqual(TestScope.__n('%s cat', 5), '5 cats')
+      should.deepEqual(TestScope.__n('%s cat', 6), '6 cats')
+      should.deepEqual(TestScope.__n('%s cat', 21), '21 cats')
+      done()
+    })
+
+    it('__n() should return correctly in arabic', function (done) {
+      TestScope.setLocale('ar')
+      should.deepEqual(TestScope.__n('%s book', 0), '‫٠ كتاب')
+      should.deepEqual(TestScope.__n('%s book', 1), 'كتاب')
+      should.deepEqual(TestScope.__n('%s book', 2), 'كتابان')
+      should.deepEqual(TestScope.__n('%s book', 3), '‫٣ كتب')
+      should.deepEqual(TestScope.__n('%s book', 11), '‫١١ كتابًا')
+      should.deepEqual(TestScope.__n('%s book', 100), '‫١٠٠ كتاب')
+      TestScope.__n('%s dog', 0)
+      TestScope.__n('%s kitty', '%s kittens', 0)
+      done()
+    })
+
+    it('__n() should return correctly in german for all regions', function (done) {
+      var regions = ['de-DE', 'de-AT', 'de-CH']
+      for (var i = 0; i < regions.length; i++) {
+        TestScope.setLocale(regions[i])
+        should.deepEqual(TestScope.__n('%s cat', 0), '0 Katzen')
+        should.deepEqual(TestScope.__n('%s cat', 1), '1 Katze')
+        should.deepEqual(TestScope.__n('%s cat', 2), '2 Katzen')
+        should.deepEqual(TestScope.__n('%s cat', 5), '5 Katzen')
+        should.deepEqual(TestScope.__n('%s cat', 6), '6 Katzen')
+        should.deepEqual(TestScope.__n('%s cat', 21), '21 Katzen')
+      }
+      done()
+    })
+  })
+})

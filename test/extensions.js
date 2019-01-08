@@ -1,6 +1,6 @@
 var extensions = [
-  '.json'
-, '.yml'
+  '.json',
+  '.yml'
 ]
 
 module.exports = extensions
