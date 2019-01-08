@@ -1,21 +1,24 @@
 {
-  "name": "i18n",
-  "description": "lightweight translation module with dynamic json storage",
-  "version": "0.8.3",
-  "homepage": "http://github.com/mashpie/i18n-node",
+  "name": "@ianwalter/i18n",
+  "description": "Lightweight translation module for Node.js",
+  "version": "0.0.0",
+  "homepage": "http://github.com/ianwalter/i18n",
   "repository": {
     "type": "git",
-    "url": "http://github.com/mashpie/i18n-node.git"
+    "url": "http://github.com/ianwalter/i18n.git"
   },
   "author": "Marcus Spiegel <marcus.spiegel@gmail.com>",
+  "license": "MIT",
   "main": "./index",
   "keywords": [
     "template",
     "i18n",
     "l10n"
   ],
-  "directories": {
-    "lib": "."
+  "scripts": {
+    "jshint": "jshint --verbose .",
+    "test": "npm run jshint && make test",
+    "test-ci": "npm run jshint && istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "dependencies": {
     "debug": "*",
@@ -39,11 +42,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "scripts": {
-    "jshint": "jshint --verbose .",
-    "test": "npm run jshint && make test",
-    "test-ci": "npm run jshint && istanbul cover ./node_modules/mocha/bin/_mocha"
-  },
-  "license": "MIT"
+  }
 }
