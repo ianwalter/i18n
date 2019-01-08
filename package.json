@@ -21,6 +21,7 @@
     "test-ci": "npm run jshint && istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "dependencies": {
+    "common-tags": "^1.8.0",
     "debug": "*",
     "js-yaml": "^3.10.0",
     "make-plural": "^4",

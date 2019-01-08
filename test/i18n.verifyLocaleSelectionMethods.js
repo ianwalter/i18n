@@ -51,16 +51,16 @@ describe('when configuring selected locale', function () {
 
   describe('should result in the same locale whether set by cookie, queryParam, or header', function () {
     it('should work for simple language codes', function (done) {
-      (setByQueryParam(i18n, 'en')).should.be.equal('en', 'when set via queryParameter');
-      (setByCookie(i18n, 'en')).should.be.equal('en', 'when set via cookie');
-      (setByHeader(i18n, 'en')).should.be.equal('en', 'when set via header')
+      setByQueryParam(i18n, 'en').should.be.equal('en', 'when set via queryParameter')
+      setByCookie(i18n, 'en').should.be.equal('en', 'when set via cookie')
+      setByHeader(i18n, 'en').should.be.equal('en', 'when set via header')
       done()
     })
 
     it('should work for compound language codes', function (done) {
-      (setByQueryParam(i18n, 'de-AT')).should.be.equal('de-AT', 'when set via queryParameter');
-      (setByCookie(i18n, 'de-AT')).should.be.equal('de-AT', 'when set via cookie');
-      (setByHeader(i18n, 'de-AT')).should.be.equal('de-AT', 'when set via header')
+      setByQueryParam(i18n, 'de-AT').should.be.equal('de-AT', 'when set via queryParameter')
+      setByCookie(i18n, 'de-AT').should.be.equal('de-AT', 'when set via cookie')
+      setByHeader(i18n, 'de-AT').should.be.equal('de-AT', 'when set via header')
       done()
     })
   })

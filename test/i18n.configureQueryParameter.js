@@ -1,8 +1,8 @@
 var i18n = require('../i18n')
 var extensions = require('./extensions')
 
-extensions.forEach(function (extension) {
-  describe('Locale switching should work queryParameter use ' + extension, function () {
+extensions.forEach(function (ext) {
+  describe(`Locale switching should work queryParameter use ${ext}`, () => {
     var req
     var res
 
@@ -13,7 +13,7 @@ extensions.forEach(function (extension) {
         queryParameter: 'lang',
         cookiename: 'languageCookie',
         directory: './locales',
-        extension: extension
+        extension: ext
       })
 
       req = {
@@ -32,7 +32,7 @@ extensions.forEach(function (extension) {
       }
     })
 
-    it('getLocale should return same locale for req and res based on ?lang=fr', function () {
+    it('getLocale should return same locale for req and res based on ?lang=fr', () => {
       i18n.init(req, res)
 
       i18n.getLocale(req).should.equal('fr')

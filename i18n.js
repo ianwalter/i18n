@@ -13,8 +13,6 @@ var vsprintf = require('sprintf-js').vsprintf
 
 var fs = require('fs')
 
-var url = require('url')
-
 var path = require('path')
 
 var debug = require('debug')('i18n:debug')
@@ -34,6 +32,8 @@ var MakePlural = require('make-plural/make-plural').load(
 var yaml = require('js-yaml')
 
 var parseInterval = require('math-interval-parser').default
+
+const { oneLineTrim } = require('common-tags')
 
 // exports an instance
 module.exports = (function () {
@@ -684,10 +684,15 @@ module.exports = (function () {
 
       // a query parameter overwrites all
       if (queryParameter && request.url) {
-        var urlObj = url.parse(request.url, true)
-        if (urlObj.query[queryParameter]) {
-          logDebug('Overriding locale from query: ' + urlObj.query[queryParameter])
-          request.language = urlObj.query[queryParameter]
+        const urlObj = request.url.includes('http')
+          ? new URL(request.url, true)
+          : new URL(`http://placeholder.com${request.url}`)
+        if (urlObj.searchParams.get(queryParameter)) {
+          logDebug(oneLineTrim`
+            Overriding locale from query:
+            ${urlObj.searchParams.get(queryParameter)}
+          `)
+          request.language = urlObj.searchParams.get(queryParameter)
 
           if (preserveLegacyCase) {
             request.language = request.language.toLowerCase()
