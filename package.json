@@ -58,6 +58,10 @@
     ],
     "env": {
       "mocha": true
+    },
+    "globals": {
+      "__": true,
+      "__n": true
     }
   },
   "engines": {

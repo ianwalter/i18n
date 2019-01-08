@@ -24,11 +24,9 @@ extensions.forEach(function (extension) {
       var stats = fs.lstatSync('./defaultlocales')
       should.exist(stats)
       if (stats) {
-        try {
-          fs.unlinkSync('./defaultlocales/de' + extension)
-          fs.unlinkSync('./defaultlocales/en' + extension)
-          fs.rmdirSync('./defaultlocales')
-        } catch (e) {}
+        fs.unlinkSync('./defaultlocales/de' + extension)
+        fs.unlinkSync('./defaultlocales/en' + extension)
+        fs.rmdirSync('./defaultlocales')
       }
     })
 

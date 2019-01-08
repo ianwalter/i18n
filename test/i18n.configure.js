@@ -22,11 +22,9 @@ describe('Module Config', function () {
     var stats = fs.lstatSync('./customlocales')
     should.exist(stats)
     if (stats) {
-      try {
-        fs.unlinkSync('./customlocales/customprefix-de.customextension')
-        fs.unlinkSync('./customlocales/customprefix-en.customextension')
-        fs.rmdirSync('./customlocales')
-      } catch (e) {}
+      fs.unlinkSync('./customlocales/customprefix-de.customextension')
+      fs.unlinkSync('./customlocales/customprefix-en.customextension')
+      fs.rmdirSync('./customlocales')
     }
   })
 
