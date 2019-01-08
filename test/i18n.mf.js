@@ -1,23 +1,24 @@
-var i18n = require('../i18n')
-var should = require('should')
-var extensions = require('./extensions')
+const i18n = require('../i18n')
+const should = require('should')
+const extensions = require('./extensions')
+const { oneLineTrim } = require('common-tags')
 
-extensions.forEach(function (extension) {
-  describe('parsing Messageformat phrases use ' + extension, function () {
-    var mfTest = {}
+extensions.forEach(extension => {
+  describe(`parsing Messageformat phrases use ${extension}`, () => {
+    const mfTest = {}
 
-    beforeEach(function () {
+    beforeEach(() => {
       i18n.configure({
         locales: ['en', 'de', 'fr', 'ru'],
         register: mfTest,
         directory: './locales',
         updateFiles: false,
         objectNotation: true,
-        extension: extension
+        extension
       })
     })
 
-    it('should work with simple strings', function () {
+    it('should work with simple strings', () => {
       mfTest.setLocale('en')
       should.equal('Hello', mfTest.__mf('Hello'))
 
@@ -29,7 +30,7 @@ extensions.forEach(function (extension) {
       should.equal('Hello', mfTest.__mf({ phrase: 'Hello', locale: 'en' }))
     })
 
-    it('should work with basic replacements', function () {
+    it('should work with basic replacements', () => {
       mfTest.setLocale('en')
       should.equal('Hello Marcus', mfTest.__mf('Hello {name}', { name: 'Marcus' }))
 
@@ -38,51 +39,30 @@ extensions.forEach(function (extension) {
       should.equal('Hallo Marcus, wie war dein test?', mfTest.__mf('Hello {name}, how was your %s?', 'test', { name: 'Marcus' }))
     })
 
-    it('should work with plurals', function () {
-      var msg = 'In {lang} there {NUM, plural,'
-      msg += 'zero{are zero for #}'
-      msg += 'one{is one for #}'
-      msg += 'two{is two for #}'
-      msg += 'few{are a few for #}'
-      msg += 'many{are many for #}'
-      msg += 'other{others for #}}'
+    it('should work with plurals', () => {
+      const msg = oneLineTrim`
+        In {lang}, there {NUM, plural,
+          =0{are no unicorns}
+          one{is # unicorn}
+          other{are # unicorns}
+        }
+      `
 
       mfTest.setLocale('en')
-      should.equal('In english there others for 0', mfTest.__mf(msg, { NUM: 0, lang: 'english' }))
-      should.equal('In english there is one for 1', mfTest.__mf(msg, { NUM: 1, lang: 'english' }))
-      should.equal('In english there others for 2', mfTest.__mf(msg, { NUM: 2, lang: 'english' }))
-      should.equal('In english there others for 3', mfTest.__mf(msg, { NUM: 3, lang: 'english' }))
-      should.equal('In english there others for 4', mfTest.__mf(msg, { NUM: 4, lang: 'english' }))
-      should.equal('In english there others for 5', mfTest.__mf(msg, { NUM: 5, lang: 'english' }))
-      should.equal('In english there others for 6', mfTest.__mf(msg, { NUM: 6, lang: 'english' }))
+      const english0 = mfTest.__mf(msg, { NUM: 0, lang: 'english' })
+      should.equal('In english, there are no unicorns', english0)
+      const english1 = mfTest.__mf(msg, { NUM: 1, lang: 'english' })
+      should.equal('In english, there is 1 unicorn', english1)
+      const english2 = mfTest.__mf(msg, { NUM: 2, lang: 'english' })
+      should.equal('In english, there are 2 unicorns', english2)
 
       mfTest.setLocale('de')
-      should.equal('In german there others for 0', mfTest.__mf(msg, { NUM: 0, lang: 'german' }))
-      should.equal('In german there is one for 1', mfTest.__mf(msg, { NUM: 1, lang: 'german' }))
-      should.equal('In german there others for 2', mfTest.__mf(msg, { NUM: 2, lang: 'german' }))
-      should.equal('In german there others for 3', mfTest.__mf(msg, { NUM: 3, lang: 'german' }))
-      should.equal('In german there others for 4', mfTest.__mf(msg, { NUM: 4, lang: 'german' }))
-      should.equal('In german there others for 5', mfTest.__mf(msg, { NUM: 5, lang: 'german' }))
-      should.equal('In german there others for 6', mfTest.__mf(msg, { NUM: 6, lang: 'german' }))
-
-      mfTest.setLocale('fr')
-      should.equal('In french there is one for 0', mfTest.__mf(msg, { NUM: 0, lang: 'french' }))
-      should.equal('In french there is one for 1', mfTest.__mf(msg, { NUM: 1, lang: 'french' }))
-      should.equal('In french there others for 2', mfTest.__mf(msg, { NUM: 2, lang: 'french' }))
-      should.equal('In french there others for 3', mfTest.__mf(msg, { NUM: 3, lang: 'french' }))
-      should.equal('In french there others for 4', mfTest.__mf(msg, { NUM: 4, lang: 'french' }))
-      should.equal('In french there others for 5', mfTest.__mf(msg, { NUM: 5, lang: 'french' }))
-      should.equal('In french there others for 6', mfTest.__mf(msg, { NUM: 6, lang: 'french' }))
-
-      mfTest.setLocale('ru')
-      should.equal('In russian there are many for 0', mfTest.__mf(msg, { NUM: 0, lang: 'russian' }))
-      should.equal('In russian there is one for 1', mfTest.__mf(msg, { NUM: 1, lang: 'russian' }))
-      should.equal('In russian there are a few for 2', mfTest.__mf(msg, { NUM: 2, lang: 'russian' }))
-      should.equal('In russian there are a few for 3', mfTest.__mf(msg, { NUM: 3, lang: 'russian' }))
-      should.equal('In russian there are a few for 4', mfTest.__mf(msg, { NUM: 4, lang: 'russian' }))
-      should.equal('In russian there are many for 5', mfTest.__mf(msg, { NUM: 5, lang: 'russian' }))
-      should.equal('In russian there are many for 6', mfTest.__mf(msg, { NUM: 6, lang: 'russian' }))
-      should.equal('In russian there is one for 21', mfTest.__mf(msg, { NUM: 21, lang: 'russian' }))
+      const german0 = mfTest.__mf(msg, { NUM: 0, lang: 'german' })
+      should.equal('In german, there are no unicorns', german0)
+      const german1 = mfTest.__mf(msg, { NUM: 1, lang: 'german' })
+      should.equal('In german, there is 1 unicorn', german1)
+      const german2 = mfTest.__mf(msg, { NUM: 2, lang: 'german' })
+      should.equal('In german, there are 2 unicorns', german2)
     })
   })
 })

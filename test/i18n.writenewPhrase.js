@@ -1,16 +1,13 @@
-var i18n = require('../i18n')
+const i18n = require('../i18n')
+const should = require('should')
+const fs = require('fs')
+const extensions = require('./extensions')
+const yaml = require('js-yaml')
+const { oneLineTrim } = require('common-tags')
 
-var should = require('should')
+const directory = './localestowrite'
 
-var fs = require('fs')
-
-var extensions = require('./extensions')
-
-var yaml = require('js-yaml')
-
-var directory = './localestowrite'
-
-extensions.forEach(function (extension) {
+extensions.forEach(extension => {
   function getData (l) {
     switch (extension) {
       case '.yml':
@@ -32,11 +29,11 @@ extensions.forEach(function (extension) {
     fs.writeFileSync(directory + '/' + l + extension, data)
   }
 
-  describe('when i18n gets a new phrase use ' + extension, function () {
+  describe(`when i18n gets a new phrase use ${extension}`, () => {
     var TestScope = {}
     var locales = ['en', 'de', 'fr', 'ru']
 
-    beforeEach(function () {
+    beforeEach(() => {
       TestScope = {}
       i18n.configure({
         locales: locales,
@@ -45,12 +42,12 @@ extensions.forEach(function (extension) {
         updateFiles: true,
         syncFiles: true,
         objectNotation: true,
-        extension: extension
+        extension
       })
       TestScope.setLocale('en')
     })
 
-    it('should get written to all files with __()', function (done) {
+    it('should get written to all files with __()', done => {
       TestScope.__('Hello World')
       should.deepEqual(getData('en')['Hello World'], 'Hello World')
       should.deepEqual(getData('de')['Hello World'], 'Hello World')
@@ -59,7 +56,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('is possible to manually add a translation', function (done) {
+    it('is possible to manually add a translation', done => {
       var german = getData('de')
       german['car'] = 'Auto'
       putData('de', german)
@@ -67,7 +64,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should not alter any given translation with __()', function (done) {
+    it('should not alter any given translation with __()', done => {
       TestScope.__('car')
       should.deepEqual(getData('en')['car'], 'car')
       should.deepEqual(getData('de')['car'], 'Auto')
@@ -76,7 +73,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should get written to all files with __n()', function (done) {
+    it('should get written to all files with __n()', done => {
       TestScope.__n('%s cat', '%s cats', 3)
       should.deepEqual(getData('en')['%s cat'], { one: '%s cat', other: '%s cats' })
       should.deepEqual(getData('de')['%s cat'], { one: '%s cat', other: '%s cats' })
@@ -85,7 +82,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should get written to all files with __n() - short signature', function (done) {
+    it('should get written to all files with __n() - short signature', done => {
       TestScope.__n('%s dog', 3)
       should.deepEqual(getData('en')['%s dog'], { one: '%s dog', other: '%s dog' })
       should.deepEqual(getData('de')['%s dog'], { one: '%s dog', other: '%s dog' })
@@ -94,7 +91,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should work with dotnotaction by use of __()', function (done) {
+    it('should work with dotnotaction by use of __()', done => {
       TestScope.__('some.deeper.example')
       should.deepEqual(getData('en').some.deeper, { example: 'some.deeper.example' })
       should.deepEqual(getData('de').some.deeper, { example: 'some.deeper.example' })
@@ -103,7 +100,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should add subnodes to dotnotaction by use of __()', function (done) {
+    it('should add subnodes to dotnotaction by use of __()', done => {
       TestScope.__('some.other.example:with defaults')
       var expected = {
         deeper: { example: 'some.deeper.example' },
@@ -116,7 +113,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should add translations with dotnotaction by use of __n()', function (done) {
+    it('should add translations with dotnotaction by use of __n()', done => {
       TestScope.__n('example.nested.plurals:%s kitty', 'example.for.plurals:%s kitties', 2)
       var expected = { one: '%s kitty', other: '%s kitties' }
       should.deepEqual(getData('en').example.nested.plurals, expected)
@@ -126,7 +123,7 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should add translations with dotnotaction by use of __n()', function (done) {
+    it('should add translations with dotnotaction by use of __n()', done => {
       TestScope.__n('example.single.plurals:%s kitty', 2)
       var expected = { one: '%s kitty', other: '%s kitty' }
       should.deepEqual(getData('en').example.single.plurals, expected)
@@ -136,15 +133,14 @@ extensions.forEach(function (extension) {
       done()
     })
 
-    it('should add translations with messageformat by use of __mf()', function (done) {
-      var msg = 'In {language} there {N, plural,'
-      msg += 'zero{are zero for # }'
-      msg += 'one{is one for # }'
-      msg += 'two{is two for # }'
-      msg += 'few{are a few for # }'
-      msg += 'many{are many for # }'
-      msg += 'other{others for # }'
-      msg += '}'
+    it('should add translations with messageformat by use of __mf()', done => {
+      const msg = oneLineTrim`
+        In {lang}, there {NUM, plural,
+          =0{are no unicorns}
+          one{is # unicorn}
+          other{are # unicorns}
+        }
+      `
 
       // this should just add that string
       TestScope.__mf(msg, { N: 1 })
