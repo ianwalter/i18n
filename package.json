@@ -1,7 +1,7 @@
 {
   "name": "@ianwalter/i18n",
   "description": "Lightweight translation module for Node.js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "http://github.com/ianwalter/i18n",
   "repository": {
     "type": "git",
