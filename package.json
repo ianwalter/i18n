@@ -16,7 +16,7 @@
     "l10n"
   ],
   "scripts": {
-    "lint": "jshint --verbose .",
+    "lint": "eslint i18n.js test --ext js",
     "test": "mocha",
     "test-ci": "npm run jshint && istanbul cover ./node_modules/mocha/bin/_mocha"
   },
@@ -32,13 +32,33 @@
   "devDependencies": {
     "async": "*",
     "cookie-parser": "^1.4.1",
+    "eslint": "^5.12.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "express": "^4.13.4",
-    "jshint": "*",
+    "html-webpack-plugin": "^3.2.0",
     "mocha": "^3.5.3",
     "should": "*",
     "sinon": "^3.3.0",
     "url": "^0.11.0",
     "zombie": "*"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "standard",
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "mocha"
+    ],
+    "env": {
+      "mocha": true
+    }
   },
   "engines": {
     "node": ">=0.10.0"
