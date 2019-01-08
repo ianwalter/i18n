@@ -24,7 +24,7 @@
     "debug": "*",
     "js-yaml": "^3.10.0",
     "make-plural": "^4",
-    "math-interval-parser": "^1.1.0",
+    "math-interval-parser": "^2.0.0",
     "messageformat": "^0",
     "mustache": "*",
     "sprintf-js": ">=1.0.3"
