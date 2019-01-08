@@ -469,26 +469,27 @@ Supports the advanced MessageFormat as provided by excellent
 definetly head over to
 [messageformat.github.io](https://messageformat.github.io) for a guide to
 MessageFormat. i18n takes care of `new MessageFormat('en').compile(msg);` with
-the current `msg` loaded from it's json files and cache that complied fn in
+the current `msg` loaded from it's json files and caches the complied fn in
 memory. So in short you might use it similar to `__()` plus extra object to
 accomplish MessageFormat's formating. Ok, some examples:
 
 ```js
-// assume res is set to german
+// Assume res is set to german.
 res.setLocale('de')
 
-// start simple
+// Start simple.
 res.__mf('Hello') // --> Hallo
 
-// can replace too
+// Can replace too.
 res.__mf('Hello {name}', { name: 'Marcus' }) // --> Hallo Marcus
 
-// and combines with sprintf
-res.__mf('Hello {name}, how was your %s?', 'test', { name: 'Marcus' }) // --> Hallo Marcus, wie war dein test?
+// And combines with sprintf.
+res.__mf('Hello {name}, how was your %s?', 'test', { name: 'Marcus' })
+// --> Hallo Marcus, wie war dein test?
 
-// now check out a plural rule
+// Now check out a plural rule.
 res.__mf(
-  '{N, plural, one{# cat} few{# cats} many{# cats} others{# cats}}',
+  '{N, plural, one{# cat} other{# cats} =0{# cats}}',
   { N: 1 }
 )
 
@@ -498,29 +499,17 @@ res.__mf(
 // fr --> 1 chat
 // ru --> 1 кошка       ru uses "__one__" when ending on "1"
 
-// results for "0" in   (most use "others")
+// results for "0" in
 // en --> 0 cats
 // de --> 0 Katzen
 // fr --> 0 chat        fr uses "__one__" for zero
 // ru --> 0 кошек       ru uses "__many__"
 
-// results for "2" in   (most use "others")
-// en --> 2 cat
-// de --> 2 Katze
+// results for "2" in
+// en --> 2 cats
+// de --> 2 Katzen
 // fr --> 2 chat
 // ru --> 2 кошки       ru uses "__few__" when ending on "1"
-
-// results for "5" in   (most use "others")
-// en --> 5 cat
-// de --> 5 Katze
-// fr --> 5 chat
-// ru --> 5 кошек       ru uses "__many__"
-
-// results for "21" in  (most use "others")
-// en --> 21 cat
-// de --> 21 Katze
-// fr --> 21 chat
-// ru --> 21 кошка       ru uses "__one__" when ending on "1"
 ```
 
 Take a look at
