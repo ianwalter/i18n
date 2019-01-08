@@ -16,7 +16,7 @@
     "l10n"
   ],
   "scripts": {
-    "jshint": "jshint --verbose .",
+    "lint": "jshint --verbose .",
     "test": "npm run jshint && make test",
     "test-ci": "npm run jshint && istanbul cover ./node_modules/mocha/bin/_mocha"
   },

@@ -1,6 +1,6 @@
 # @ianwalter/i18n
 
-## Forked from [i18n-node](http://github.com/mashpie/i18n-node) in progress
+## Fork from [i18n-node](http://github.com/mashpie/i18n-node) in progress
 
 Lightweight simple translation module with dynamic json storage. Supports plain
 vanilla node.js apps and should work with any framework (like _express_,
@@ -11,12 +11,7 @@ Stores language files in json files compatible to
 Adds new strings on-the-fly when first used in your app.
 No extra parsing needed.
 
-[![Linux/OSX Build][travis-image]][travis-url]
-[![Windows Build][appveyor-image]][appveyor-url]
-[![NPM version][npm-image]][npm-url]
-[![Dependency Status][dependency-image]][dependency-url]
-[![Test Coverage][coveralls-image]][coveralls-url]
-[![Known Vulnerabilities][snyk-image]][snyk-url]
+[![npm page][npmImage]][npmUrl]
 
 ## Install
 ```sh
@@ -1054,7 +1049,8 @@ i18n exposes three log-levels:
 * i18n:warn
 * i18n:error
 
-if you only want to get errors and warnings reported start your node server like so:
+if you only want to get errors and warnings reported start your node server like
+so:
 
 ```sh
 $ DEBUG=i18n:warn,i18n:error node app.js
@@ -1087,31 +1083,12 @@ i18n.configure({
     logErrorFn: function (msg) {
         console.log('error', msg)
     }
-});
+})
 ```
-
-[![NPM](https://nodei.co/npm/i18n.svg?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/i18n/)
-
-
 
 ## License
 
 
 
-[npm-image]: https://badge.fury.io/js/i18n.svg
-[npm-url]: https://www.npmjs.com/package/i18n
-
-[travis-image]: https://travis-ci.org/mashpie/i18n-node.svg?branch=master
-[travis-url]: https://travis-ci.org/mashpie/i18n-node
-
-[appveyor-image]: https://ci.appveyor.com/api/projects/status/677snewuop7u5xtl?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/mashpie/i18n-node
-
-[coveralls-image]: https://coveralls.io/repos/github/mashpie/i18n-node/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/mashpie/i18n-node?branch=master
-
-[dependency-image]: https://img.shields.io/gemnasium/mashpie/i18n-node.svg
-[dependency-url]: https://gemnasium.com/mashpie/i18n-node
-
-[snyk-image]: https://snyk.io/test/npm/i18n/badge.svg
-[snyk-url]: https://snyk.io/test/npm/i18n
+[npmImage]: https://img.shields.io/npm/v/@ianwalter/i18n.svg
+[npmUrl]: https://www.npmjs.com/package/@ianwalter/i18n
