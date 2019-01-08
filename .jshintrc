@@ -43,20 +43,9 @@
   // Enforce use of single quotation marks for strings.
   "quotmark": "single",
 
-  // Enforce placing 'use strict' at the top function scope
-  "strict": true,
-
   // Prohibit use of explicitly undeclared variables.
   "undef": true,
 
   // Warn when variables are defined but never used.
-  "unused": true,
-
-  /*
-   * RELAXING OPTIONS
-   * =================
-   */
-
-  // Suppress warnings about == null comparisons.
-  "eqnull": true
+  "unused": true
 }
