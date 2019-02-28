@@ -23,7 +23,7 @@
   "dependencies": {
     "common-tags": "^1.8.0",
     "debug": "*",
-    "js-yaml": "^3.10.0",
+    "js-yaml": "^3.12.2",
     "make-plural": "^4",
     "math-interval-parser": "^2.0.1",
     "messageformat": "^2.0.5",
