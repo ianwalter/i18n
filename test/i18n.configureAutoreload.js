@@ -1,10 +1,7 @@
-var i18n = require('../i18n')
-
-var should = require('should')
-
 var fs = require('fs')
-
 var path = require('path')
+var should = require('should')
+var i18n = require('../i18n')
 
 var i18nPath = 'i18n'
 var i18nFilename = path.resolve(i18nPath + '.js')
@@ -18,7 +15,7 @@ function reconfigure (config) {
 
 describe('autoreload configuration', function () {
   var testScope = {}
-  var directory = path.resolve(__dirname + '/../testlocalesauto')
+  var directory = path.join(__dirname, '/../testlocalesauto')
 
   it('will start with empty catalogs', function (done) {
     fs.mkdirSync(directory)
@@ -60,7 +57,7 @@ describe('autoreload configuration', function () {
 
 describe('autoreload configuration with prefix', function () {
   var testScope = {}
-  var directory = path.resolve(__dirname + '/../testlocalesautoprefixed')
+  var directory = path.join(__dirname, '/../testlocalesautoprefixed')
 
   it('will start with empty catalogs', function (done) {
     fs.mkdirSync(directory)
@@ -103,7 +100,7 @@ describe('autoreload configuration with prefix', function () {
 
 describe('autoreload configuration with prefix and customextension', function () {
   var testScope = {}
-  var directory = path.resolve(__dirname + '/../testlocalesautoprefixedext')
+  var directory = path.join(__dirname, '/../testlocalesautoprefixedext')
 
   it('will start with empty catalogs', function (done) {
     fs.mkdirSync(directory)
@@ -147,7 +144,7 @@ describe('autoreload configuration with prefix and customextension', function ()
 
 describe('autoreload configuration with customextension', function () {
   var testScope = {}
-  var directory = path.resolve(__dirname + '/../testlocalesautocustomextension')
+  var directory = path.join(__dirname, '/../testlocalesautocustomextension')
 
   it('will start with empty catalogs', function (done) {
     fs.mkdirSync(directory)
@@ -190,7 +187,7 @@ describe('autoreload configuration with customextension', function () {
 
 describe('autoreload configuration with .yaml', function () {
   var testScope = {}
-  var directory = path.resolve(__dirname + '/../testlocalesautoyaml')
+  var directory = path.join(__dirname, '/../testlocalesautoyaml')
 
   it('will start with empty catalogs', function (done) {
     fs.mkdirSync(directory)

@@ -58,7 +58,7 @@ extensions.forEach(function (extension) {
     })
 
     it('should be possible to bind to non-request objects', function (done) {
-      var plain = new Object()
+      var plain = {}
       should.equal(i18n.init(plain), undefined)
       should.equal(plain.locale, 'en')
       should.equal(plain.__('Hello'), 'Hello')
